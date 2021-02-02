@@ -44,9 +44,9 @@
 #MCU = atmega8
 #MCU = atmega88
 #MCU = atmega168
-MCU = atmega328p
+#MCU = atmega328p
 #MCU = atmega16
-#MCU = atmega32
+MCU = atmega32
 #MCU = atmega644
 
 # Processor frequency.
@@ -65,6 +65,7 @@ BOOTLOADER_BOARD_ID =
 #     ATMega16/168  => 0x3C00
 #     ATMega32      => 0x7000
 #     ATMega644     => 0xFC00
+# Atmega328p (1024 words)   =>0x7800
 ifeq ($(MCU), atmega8)
 BOOTSTART = 0x1C00
 else ifeq ($(MCU), atmega88)
@@ -74,9 +75,11 @@ BOOTSTART = 0x3C00
 else ifeq ($(MCU), atmega16)
 BOOTSTART = 0x3C00
 else ifeq ($(MCU), atmega32)
-BOOTSTART = 0x7C00
+#BOOTSTART = 0x7C00
+BOOTSTART = 0x7800
 else ifeq ($(MCU), atmega328p)
-BOOTSTART = 0x7C00
+#BOOTSTART = 0x7C00
+BOOTSTART = 0x7800
 else ifeq ($(MCU), atmega644)
 BOOTSTART = 0xFC00
 endif
@@ -171,7 +174,8 @@ CFLAGS += -Wall
 CFLAGS += -Wstrict-prototypes
 CFLAGS += -fno-inline-small-functions
 #CFLAGS += -Wno-strict-aliasing
-CFLAGS += -mshort-calls
+#CFLAGS += -Wl,-mshort-calls
+#CFLAGS += -mshort-calls
 #CFLAGS += -fno-unit-at-a-time
 #CFLAGS += -Wundef
 #CFLAGS += -Wunreachable-code
@@ -268,8 +272,10 @@ EXTMEMOPTS =
 #    -Map:      create map file
 #    --cref:    add cross reference to  map file
 LDFLAGS = -Wl,-Map=$(OBJDIR)/$(TARGET).map,--cref,--section-start=.text=$(BOOTSTART)
+LDFLAGS += -Wl,--section-start=.version=0x7FFE
 LDFLAGS += -nostartfiles
 LDFLAGS += -nodefaultlibs
+LDFLAGS += -mrelax
 LDFLAGS += $(EXTMEMOPTS)
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB) $(EXTRALIBS)

@@ -9,7 +9,7 @@ if int(id) < 15:
 else:
     id = hex(int(id))
 
-desFolder = "bootloader_atmega328p_16Mhz_mcp2515_8MHz_CS_B2"
+desFolder = "bootloader_atmega32_16Mhz_mcp2515_8MHz_CS_B2"
 shutil.copytree("bootloader_mcp2515", desFolder + "/ID_" + id)
 
 for line in fileinput.input(desFolder + "/ID_" + id + "/Makefile", inplace = 1): 

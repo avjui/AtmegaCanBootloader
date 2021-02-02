@@ -63,6 +63,7 @@ static uint16_t flashpage = 0;
 static uint8_t page_buffer_pos = 0;
 static uint8_t page_buffer[SPM_PAGESIZE];
 
+unsigned const int __attribute__((section(".version"))) ID = BOOTLOADER_BOARD_ID;
 // ----------------------------------------------------------------------------
 /**
  * \brief	starts the application program
@@ -345,7 +346,7 @@ main(void)
 			BOOT_LED_OFF;
 			boot_jump_to_application();
 		}
-#if BOOTLOADER_TYPE > 0
+#if BOOTLOADER_TYPE > 1
 		else if (command == GET_FUSEBITS)
 		{
 			message_data[0] = boot_lock_fuse_bits_get(GET_LOCK_BITS);
@@ -355,6 +356,8 @@ main(void)
 			
 			mcp2515_send_message(GET_FUSEBITS | SUCCESSFULL_RESPONSE, 4);
 		}
+#endif
+#if BOOTLOADER_TYPE > 0
 		else if (command == CHIP_ERASE)
 		{
 			// erase complete flash except the bootloader region
