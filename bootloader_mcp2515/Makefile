@@ -65,7 +65,9 @@ BOOTLOADER_BOARD_ID =
 #     ATMega16/168  => 0x3C00
 #     ATMega32      => 0x7000
 #     ATMega644     => 0xFC00
-# Atmega328p (1024 words)   =>0x7800
+# Startadress of bootlader (1024 words)
+#     ATMega328p    => 0x7800
+#     ATMega32      => 0x7800
 ifeq ($(MCU), atmega8)
 BOOTSTART = 0x1C00
 else ifeq ($(MCU), atmega88)
@@ -75,11 +77,9 @@ BOOTSTART = 0x3C00
 else ifeq ($(MCU), atmega16)
 BOOTSTART = 0x3C00
 else ifeq ($(MCU), atmega32)
-#BOOTSTART = 0x7C00
-BOOTSTART = 0x7800
+BOOTSTART = 0x7C00
 else ifeq ($(MCU), atmega328p)
-#BOOTSTART = 0x7C00
-BOOTSTART = 0x7800
+BOOTSTART = 0x7C00
 else ifeq ($(MCU), atmega644)
 BOOTSTART = 0xFC00
 endif
