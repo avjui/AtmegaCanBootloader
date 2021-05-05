@@ -45,6 +45,31 @@ Now type in (or copy) subsequent command with your individual BOARD_ID, COM_PORT
 The value from the BOARD_ID must be the BOOTLOADER_BOARD_ID from the previously flashed 
 Bootloader at the corresponding microcontroller you want to flash over CAN-Bus.
 
+## Milliontimes info: ##
+
+### Make combinated hex file
+To get hex for first installation make a folder with named "bin" and put the hexfile form the milliontimes-slave project inside.
+Then run first:
+
+    $ python BuildAllBootloaders.py
+
+After success run:
+
+    $ python makehex.py
+
+Now you have a combinate file for each ID to upload to slave modules.
+
+### Fuses to set
+
+Based on a Atmega 32 with 16Mhz quarz fuses settings are:
+
+    hfuse 0xDC
+    lfuse 0x3F
+    lockBit 0x2F
+    
+Important is to set the lockBit to be able to read bootloader setting. This is necessary for reading the ID.
+    
+
 
 
 
