@@ -14,8 +14,11 @@
 
 // ----------------------------------------------------------------------------
 // CAN Settings
-
-#define	MCP2515_CS			B,2  // B,2 Nano  // B,4 Hap-CU
+#if defined(__AVR_ATmega32__)
+	#define	MCP2515_CS			B,4  // B,2 Nano  // B,4 Hap-CU
+#else
+	#define MCP2515_CS			B,2 // B,2 Atmega328
+#endif
 #define	MCP2515_INT			D,2
 
 #define MCP2515_BITRATE 	125

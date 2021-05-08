@@ -63,6 +63,7 @@ static uint16_t flashpage = 0;
 static uint8_t page_buffer_pos = 0;
 static uint8_t page_buffer[SPM_PAGESIZE];
 
+unsigned const int __attribute__((section(".version"))) ID = BOOTLOADER_BOARD_ID;
 // ----------------------------------------------------------------------------
 /**
  * \brief	starts the application program

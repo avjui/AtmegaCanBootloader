@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #----------------------------------------------------------------------------
-# WinAVR Makefile Template written by Eric B. Weddington, J�rg Wunsch, et al.
+# WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
 #
 # Released to the Public Domain
 #
@@ -44,9 +44,9 @@
 #MCU = atmega8
 #MCU = atmega88
 #MCU = atmega168
-MCU = atmega328p
+#MCU = atmega328p
 #MCU = atmega16
-#MCU = atmega32
+MCU = atmega32
 #MCU = atmega644
 
 # Processor frequency.
@@ -65,6 +65,9 @@ BOOTLOADER_BOARD_ID =
 #     ATMega16/168  => 0x3C00
 #     ATMega32      => 0x7000
 #     ATMega644     => 0xFC00
+# Startadress of bootlader (1024 words)
+#     ATMega328p    => 0x7800
+#     ATMega32      => 0x7800
 ifeq ($(MCU), atmega8)
 BOOTSTART = 0x1C00
 else ifeq ($(MCU), atmega88)
@@ -171,7 +174,8 @@ CFLAGS += -Wall
 CFLAGS += -Wstrict-prototypes
 CFLAGS += -fno-inline-small-functions
 #CFLAGS += -Wno-strict-aliasing
-CFLAGS += -mshort-calls
+#CFLAGS += -Wl,-mshort-calls
+#CFLAGS += -mshort-calls
 #CFLAGS += -fno-unit-at-a-time
 #CFLAGS += -Wundef
 #CFLAGS += -Wunreachable-code
@@ -261,15 +265,17 @@ EXTRALIBDIRS = .
 # only used for heap (malloc()).
 #EXTMEMOPTS = -Wl,--section-start,.data=0x801100,--defsym=__heap_end=0x80ffff
 
-EXTMEMOPTS =
-
+#EXTMEMOPTS = -eeprom
+EXTMEMOPTS = 
 #---------------- Linker Options ----------------
 #  -Wl,...:     tell GCC to pass this to linker.
 #    -Map:      create map file
 #    --cref:    add cross reference to  map file
 LDFLAGS = -Wl,-Map=$(OBJDIR)/$(TARGET).map,--cref,--section-start=.text=$(BOOTSTART)
+LDFLAGS += -Wl,--section-start=.version=0x7FFE
 LDFLAGS += -nostartfiles
 LDFLAGS += -nodefaultlibs
+LDFLAGS += -mrelax
 LDFLAGS += $(EXTMEMOPTS)
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB) $(EXTRALIBS)
